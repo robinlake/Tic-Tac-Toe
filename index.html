@@ -1,0 +1,50 @@
+<head>
+    <link href='style.css' type='text/css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|700" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src='script.js'></script>
+
+</head>
+<body>
+    <div class='container mainBox'>
+        <h2>Tic-tac-toe</h2>
+        <div class='gameGrid'>
+        <div class='row row1'>
+        <span class='cell empty' id='1'></span> 
+        <span class='cell empty' id='2'></span>
+        <span class='cell empty' id='3'></span>
+        </div>
+        <div class='row row2'>
+            <span class='cell empty' id='4'></span>
+            <span class='cell empty' id='5'></span>
+            <span class='cell empty' id='6'></span>
+        </div>
+        <div class='row row3'>
+            <span class='cell empty' id='7'></span>
+            <span class='cell empty' id='8'></span>
+            <span class='cell empty' id='9'></span>
+        </div> 
+        </div>
+        <div class='message'></div>
+    <!-- pop-up box at beginning -->
+<div id="overlay">
+          <p>Who goes first?</p>
+          <button id='chooseX'>X</button>
+          <button id='chooseO'>O</button>
+          <p>Play against:</p>
+          <button>Human</button>
+          <button>Computer</button>
+</div>
+<div class ='scores'>
+            <p>
+                <span class='bold'>Wins for X: </span>
+                <span id='xWins'>0</span>
+            </p>
+            <p>
+                <span class='bold'>Wins for O: </span>
+                <span id='oWins'>0</span>
+            </p>
+        </div>
+    </div>
+
+</body>

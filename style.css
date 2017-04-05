@@ -1,0 +1,76 @@
+body {
+font-family: 'Open Sans', sans-serif;
+font-weight: 300;
+}
+
+.gameGrid, .row {
+    width: 80%;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    font-weight: 300;
+    font-size: 3em;
+    
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.scores {
+    width: 300px;
+    margin: auto;
+    text-align: center;
+    
+}
+
+
+.mainBox {
+    padding-top: 50px;
+
+}
+.row{
+    display: flex;
+    justify-content: center;
+}
+.cell {
+    width: 100px;
+    height: 80px;
+    background: #eee;
+    display: inline-block;
+    margin: 2px;
+    vertical-align: top;
+    text-align: center;
+    padding: .25em 0 0 0;
+    font-size: 3em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.message {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#overlay {
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    text-align: center;
+    padding: 40px;
+    width: 300px;
+    height: 200px;
+    background: rgba(255,255,255,.3);
+    -moz-box-shadow:    3px 3px 3px 3px #ccc;
+  -webkit-box-shadow: 3px 3px 3px 3px #ccc;
+  box-shadow:         3px 3px 3px 3px #ccc;
+    margin: auto;
+}
+
+@media (max-width: 599px) {
+.gameGrid, .row {
+    width: 90%;
+    margin: auto;
+}
+}
