@@ -3,7 +3,7 @@ $( document ).ready(function() {
     var computer = '';
     var cell;
     var cellValues = {};
-    var winner;
+    var winner = '';
     var xWins = 0;
     var oWins = 0;
 
@@ -20,8 +20,24 @@ $('#chooseO').click(function(){
 	$('#chooseO').css('background-color','#ccc');
 	$('#chooseX').css('background-color', '');
 });
+$('#easy').click(function(){
+    $('#easy').css('background-color', '#ccc');
+    $('#medium').css('background-color', '');
+    $('#hard').css('background-color', '');
+});
+$('#medium').click(function(){
+    $('#easy').css('background-color', '');
+    $('#medium').css('background-color', '#ccc');
+    $('#hard').css('background-color', '');
+});
+$('#hard').click(function(){
+    $('#easy').css('background-color', '');
+    $('#medium').css('background-color', '');
+    $('#hard').css('background-color', '#ccc');
+});
 $('#human').click(function(){
     $('#overlay').hide();
+    computer = '';
 });
 $('#computer').click(function(){
     $('#overlay').hide();
@@ -45,7 +61,7 @@ function makeMove(cell) { // populates board with player icon and updates record
         checkWin(player);
         switchPlayers();
     } 
-    if (computer != ''){
+    if (computer != '' && Object.keys(cellValues).length < 9){
         computerMove();
     }
 }
@@ -57,57 +73,6 @@ function switchPlayers(){
     }else{
         player = 'X';
     }
-}
-
-function checkGameStatus() {
-    
-//check for winner    
-  if (cellValues[5] !== null) {
-if (cellValues[1] == cellValues[5] && cellValues[5] == cellValues[9]
-|| cellValues[2] == cellValues[5] && cellValues[5] == cellValues[8]
-|| cellValues[3] == cellValues[5] && cellValues[5] == cellValues[7]
-|| cellValues[4] == cellValues[5] && cellValues[5] == cellValues[6])
- {
-     winner = cellValues[5];
-     if (winner !== undefined) {
-        $('.message').html(winner + " wins the game!");
-        updateScore(winner);
-}
-}
-}
-
-if (cellValues[1] !== null) {
-    if (cellValues[1] == cellValues[2] && cellValues[1] == cellValues[3]
-    || cellValues[1] == cellValues[4] && cellValues[1] == cellValues[7])
- {
-     winner = cellValues[1];
-     if (winner !== undefined) {
-        $('.message').html(winner + " wins the game!");
-        updateScore(winner);
-}
-}    
-}
-if (cellValues[9] !== null) {
-    if (cellValues[9] == cellValues[6] && cellValues[9] == cellValues[3]
-    || cellValues[9] == cellValues[8] && cellValues[9] == cellValues[7])
- {
-     winner = cellValues[9];
-     if (winner !== undefined) {
-        $('.message').html(winner + " wins the game!");
-        updateScore(winner);
-}   
-}
-}
-// check for draw
-
-if (Object.keys(cellValues).length ===9 && winner == undefined){
-    console.log('length: ' + Object.keys(cellValues).length);
-    console.log("winner: " + winner);
-        $('.message').html("it's a draw!");
-        resetGame();
-    }
-
-
 }
 
 function updateScore(winner) {
@@ -164,40 +129,48 @@ function checkWin(player) {
          winner = player;
         $('.message').html(winner + " wins the game!");
         updateScore(winner);
+    	$('#chooseX').css('background-color', '');
+    	$('#chooseO').css('background-color', '');
         resetGame();
  } else if( Object.keys(cellValues).length == 9) {
         $('.message').html("it's a draw!");
+    	$('#chooseX').css('background-color', '');
+    	$('#chooseO').css('background-color', '');
         resetGame();
+ }else {
+     winner = '';
  }
 };
 
 // computer move with random selection
 var randomChoice;
 var choice;
-function computerMove(retry){
-    //var retry;
+function computerMove(){
+    var retry = '';
     randomChoice =  Math.ceil(Math.random()*9);
     choice = parseInt(randomChoice, 10);
+    if (retry != ''){
+        choice = retry;
+    }
     console.log(choice);
     function placeToken(){
         if(cellValues.hasOwnProperty(choice)){
-            console.log('foo');
+            retry = (choice % 9) + 1;
+            console.log('trying again');
+            console.log(cellValues);
+            computerMove();
         }else{
             $('#' + choice).html(player);
-            if (player == 'X'){
-                player = 'O';
-            } else {
-                player = 'X';
-            }
+            console.log('placing token');
+            console.log(cellValues);
+            retry = '';
+            cellValues[`${choice}`] = player;
+            checkWin(player);
+            switchPlayers();
         }
     }
     placeToken();
 }
-$('#compy').click(function(){
-    computerMove();
-    console.log(randomChoice.valueOf());
-    console.log(choice);
-})
 
 
 /*
@@ -283,5 +256,58 @@ function minimax(reboard, player) {
 }
 
 */
+
+
+function checkGameStatus() {
+    
+//check for winner    
+  if (cellValues[5] !== null) {
+if (cellValues[1] == cellValues[5] && cellValues[5] == cellValues[9]
+|| cellValues[2] == cellValues[5] && cellValues[5] == cellValues[8]
+|| cellValues[3] == cellValues[5] && cellValues[5] == cellValues[7]
+|| cellValues[4] == cellValues[5] && cellValues[5] == cellValues[6])
+ {
+     winner = cellValues[5];
+     if (winner !== undefined) {
+        $('.message').html(winner + " wins the game!");
+        updateScore(winner);
+}
+}
+}
+
+if (cellValues[1] !== null) {
+    if (cellValues[1] == cellValues[2] && cellValues[1] == cellValues[3]
+    || cellValues[1] == cellValues[4] && cellValues[1] == cellValues[7])
+ {
+     winner = cellValues[1];
+     if (winner !== undefined) {
+        $('.message').html(winner + " wins the game!");
+        updateScore(winner);
+}
+}    
+}
+if (cellValues[9] !== null) {
+    if (cellValues[9] == cellValues[6] && cellValues[9] == cellValues[3]
+    || cellValues[9] == cellValues[8] && cellValues[9] == cellValues[7])
+ {
+     winner = cellValues[9];
+     if (winner !== undefined) {
+        $('.message').html(winner + " wins the game!");
+        updateScore(winner);
+}   
+}
+}
+// check for draw
+
+if (Object.keys(cellValues).length ===9 && winner == undefined){
+    console.log('length: ' + Object.keys(cellValues).length);
+    console.log("winner: " + winner);
+        $('.message').html("it's a draw!");
+        resetGame();
+    }
+
+
+}
+
 
 }); //end of document.ready
