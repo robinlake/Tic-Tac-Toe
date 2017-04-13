@@ -1,8 +1,12 @@
 $( document ).ready(function() {
-    var player = 'X';
+    var player = '';
+    var computerPlayer = '';
+    var humanPlayer = '';
     var computer = '';
+    var computerDifficulty = '';
     var cell;
-    var cellValues = {};
+    var cellValues = {};   //1st cell value instance
+    var cellValuesArray = [0,1,2,3,4,5,6,7,8];
     var winner = '';
     var xWins = 0;
     var oWins = 0;
@@ -12,11 +16,16 @@ $( document ).ready(function() {
 
 $('#chooseX').click(function(){
 	player = 'X';
+	humanPlayer = 'X';
+	computerPlayer = 'O';
 	$('#chooseX').css('background-color','#ccc');
 	$('#chooseO').css('background-color', '');
+	console.log(player, humanPlayer, computerPlayer);
 });
 $('#chooseO').click(function(){
 	player = 'O';
+	humanPlayer = 'O';
+	computerPlayer = 'X';
 	$('#chooseO').css('background-color','#ccc');
 	$('#chooseX').css('background-color', '');
 });
@@ -24,24 +33,32 @@ $('#easy').click(function(){
     $('#easy').css('background-color', '#ccc');
     $('#medium').css('background-color', '');
     $('#hard').css('background-color', '');
+    computerDifficulty = 'easy';
 });
 $('#medium').click(function(){
     $('#easy').css('background-color', '');
     $('#medium').css('background-color', '#ccc');
     $('#hard').css('background-color', '');
+    computerDifficulty = 'medium';
 });
 $('#hard').click(function(){
     $('#easy').css('background-color', '');
     $('#medium').css('background-color', '');
     $('#hard').css('background-color', '#ccc');
+    computerDifficulty = 'hard';
 });
 $('#human').click(function(){
     $('#overlay').hide();
     computer = '';
 });
 $('#computer').click(function(){
-    $('#overlay').hide();
-    computer = 1;
+    computer = 'on';
+    if(computerDifficulty != ''){
+        $('#overlay').hide();
+    } else{
+        alert('Select difficulty');
+    }
+
 });
 
 // choosing individual cells
@@ -56,13 +73,31 @@ function makeMove(cell) { // populates board with player icon and updates record
     var cellValue = document.getElementById(cell).innerHTML;
     if (cellValue == ''){
         document.getElementById(cell).innerHTML = player; // update cell with player token
-        cellValues[`${cell}`] = player; // record values of cells already taken      
+        cellValues[`${cell}`] = player; // record values of cells already taken          
+        var cellDec = parseInt(cell) - 1;
+        cellValuesArray[cellDec] = player;
         //checkGameStatus();
-        checkWin(player);
+        checkWin();
         switchPlayers();
-    } 
-    if (computer != '' && Object.keys(cellValues).length < 9){
+        // console.log(Object.keys(cellValues).length);  
+        console.log(cellValues);
+        console.log(cellValuesArray);
+    } else {
+        return;
+    }
+    if (computer == 'on' && computerDifficulty == 'easy' && Object.keys(cellValues).length < 9){ //cellvalues
         computerMove();
+    } else if (computer == 'on' && computerDifficulty == 'hard' && Object.keys(cellValues).length < 9){ //cellvalues
+        var result = minimax(cellValuesArray, computerPlayer).index;
+        console.log('result = ' + result);
+        console.log(cellValues);
+        console.log(cellValuesArray);
+        cellValuesArray[result] = computerPlayer;
+        var result1 = result + 1;
+        cellValues[result1] = computerPlayer;
+        $('#' + result1).html(computerPlayer);
+        checkWin();
+        switchPlayers();
     }
 }
 
@@ -73,8 +108,10 @@ function switchPlayers(){
     }else{
         player = 'X';
     }
+    console.log('player switched to ' + player);
 }
 
+// increment the score counter
 function updateScore(winner) {
     if (winner === "X") {
             xWins++;
@@ -93,10 +130,16 @@ function resetGame() {
     player = 'X';
     cell = '';
     cellValues = {};
+    cellValuesArray = [0,1,2,3,4,5,6,7,8];
     winner = undefined;
+    computer = '';
+    computerDifficulty = '';
     $('.cell').html('');
     $('.message').html('');
     $('#overlay').show();
+    $('#easy').css('background-color', '');
+    $('#medium').css('background-color', '');
+    $('#hard').css('background-color', '');
 }, (2000));
 }
 
@@ -114,8 +157,8 @@ $('.empty').click(function(){
 	});
 */
 
-// new check win function
-function checkWin(player) {
+// new check win function, returns true if there is a winner
+function checkWin() {
     if (
          (cellValues[1] == player && cellValues[2] == player && cellValues[3] == player) ||
          (cellValues[4] == player && cellValues[5] == player && cellValues[6] == player) ||
@@ -143,28 +186,23 @@ function checkWin(player) {
 };
 
 // computer move with random selection
-var randomChoice;
-var choice;
 function computerMove(){
     var retry = '';
-    randomChoice =  Math.ceil(Math.random()*9);
-    choice = parseInt(randomChoice, 10);
+    var randomChoice =  Math.ceil(Math.random()*9);
+    var choice = parseInt(randomChoice, 10);
     if (retry != ''){
         choice = retry;
     }
-    console.log(choice);
+    // check for available spaces recursively
     function placeToken(){
         if(cellValues.hasOwnProperty(choice)){
             retry = (choice % 9) + 1;
-            console.log('trying again');
-            console.log(cellValues);
             computerMove();
         }else{
             $('#' + choice).html(player);
-            console.log('placing token');
-            console.log(cellValues);
             retry = '';
             cellValues[`${choice}`] = player;
+            cellValuesArray[`${choice}`] = player;
             checkWin(player);
             switchPlayers();
         }
@@ -173,41 +211,20 @@ function computerMove(){
 }
 
 
-/*
+////////////////////////////////////////////////////////////////////////////
 // beginning of computer Minimax algorithm
-//check if given board results in win
-function winning(board, player){
- if (
-        (board[0] == player && board[1] == player && board[2] == player) ||
-        (board[3] == player && board[4] == player && board[5] == player) ||
-        (board[6] == player && board[7] == player && board[8] == player) ||
-        (board[0] == player && board[3] == player && board[6] == player) ||
-        (board[1] == player && board[4] == player && board[7] == player) ||
-        (board[2] == player && board[5] == player && board[8] == player) ||
-        (board[0] == player && board[4] == player && board[8] == player) ||
-        (board[2] == player && board[4] == player && board[6] == player)
-        ) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
-// check available spots
-function avail(reboard) {
-  return reboard.filter(s => s != "P" && s != "C");
-}
+var iter = 0;
 
-var calls = 0;
 
 function minimax(reboard, player) {
-  calls++;
+  iter++;
   let array = avail(reboard);
-  if (winning(reboard, huPlayer)) {
+  if (winning(reboard, humanPlayer)) {
     return {
       score: -10
     };
-  } else if (winning(reboard, aiPlayer)) {
+  } else if (winning(reboard, computerPlayer)) {
     return {
       score: 10
     };
@@ -223,19 +240,22 @@ function minimax(reboard, player) {
     move.index = reboard[array[i]];
     reboard[array[i]] = player;
 
-    if (player == aiPlayer) {
-      var g = minimax(reboard, huPlayer);
+    if (player == computerPlayer) {
+      var g = minimax(reboard, humanPlayer);
       move.score = g.score;
     } else {
-      var g = minimax(reboard, aiPlayer);
+      var g = minimax(reboard, computerPlayer);
       move.score = g.score;
     }
     reboard[array[i]] = move.index;
     moves.push(move);
   }
+    if(iter < 10){
+      console.log('moves = ' + moves);
+    }
 
   var bestMove;
-  if (player === aiPlayer) {
+  if (player === computerPlayer) {
     var bestScore = -10000;
     for (var i = 0; i < moves.length; i++) {
       if (moves[i].score > bestScore) {
@@ -255,7 +275,31 @@ function minimax(reboard, player) {
   return moves[bestMove];
 }
 
-*/
+//available spots
+function avail(reboard) {
+  return reboard.filter(s => s != "X" && s != "O");
+}
+
+
+// winning combinations
+function winning(board, player) {
+  if (
+    (board[0] == player && board[1] == player && board[2] == player) ||
+    (board[3] == player && board[4] == player && board[5] == player) ||
+    (board[6] == player && board[7] == player && board[8] == player) ||
+    (board[0] == player && board[3] == player && board[6] == player) ||
+    (board[1] == player && board[4] == player && board[7] == player) ||
+    (board[2] == player && board[5] == player && board[8] == player) ||
+    (board[0] == player && board[4] == player && board[8] == player) ||
+    (board[2] == player && board[4] == player && board[6] == player)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
 
 
 function checkGameStatus() {
