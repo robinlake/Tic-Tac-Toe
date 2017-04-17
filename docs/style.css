@@ -35,12 +35,12 @@ h2 {
     display: flex;
     justify-content: center;
 }
+
+
 .cell {
-    width: 100px;
-    height: 80px;
-    background: #dfdfdf;
+    width: 200px;
+    height: 200px;
     display: inline-block;
-    margin: 2px;
     vertical-align: top;
     text-align: center;
     padding: .25em 0 0 0;
@@ -49,7 +49,21 @@ h2 {
     font-weight: 700;
 }
 
+.br {
+    border-right: 2px #eee;
+}
 
+.bb {
+    border-bottom: 2px #eee;
+}
+
+.bl {
+    border-left: 2px #eee;
+}
+
+.bt {
+    border-top: 2px #eee;
+}
 
 
 .message {
