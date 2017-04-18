@@ -14,55 +14,52 @@ $( document ).ready(function() {
 
 // pop-up box at beginning
 
-$('#chooseX').click(function(){
+$('#human-first').click(function(){
 	player = 'X';
 	humanPlayer = 'X';
 	computerPlayer = 'O';
-	$('#chooseX').css('background-color','#ccc');
-	$('#chooseO').css('background-color', '');
-	console.log(player, humanPlayer, computerPlayer);
+    $('#overlay').hide();
 });
-$('#chooseO').click(function(){
-	player = 'O';
+
+$('#computer-first').click(function(){
+	player = 'X';
 	humanPlayer = 'O';
 	computerPlayer = 'X';
-	$('#chooseO').css('background-color','#ccc');
-	$('#chooseX').css('background-color', '');
+    $('#overlay').hide();
 });
 $('#easy').click(function(){
-    $('#easy').css('background-color', '#ccc');
-    $('#medium').css('background-color', '');
-    $('#hard').css('background-color', '');
+    $('.dif').hide();
+    $('.hc').show();
     computerDifficulty = 'easy';
 });
 $('#medium').click(function(){
-    $('#easy').css('background-color', '');
-    $('#medium').css('background-color', '#ccc');
-    $('#hard').css('background-color', '');
+    $('.dif').hide();
+    $('.hc').show();
     computerDifficulty = 'medium';
 });
 $('#hard').click(function(){
-    $('#easy').css('background-color', '');
-    $('#medium').css('background-color', '');
-    $('#hard').css('background-color', '#ccc');
+    $('.dif').hide();
+    $('.hc').show();
     computerDifficulty = 'hard';
 });
 $('#human').click(function(){
+    player = 'X';
+	humanPlayer = 'X';
+	computerPlayer = 'O';
+	console.log(player, humanPlayer, computerPlayer);
     $('#overlay').hide();
     computer = '';
 });
 $('#computer').click(function(){
     computer = 'on';
-    if(computerDifficulty != ''){
-        $('#overlay').hide();
-    } else{
-        alert('Select difficulty');
-    }
-
+    $('.pl').hide();
+    $('.dif').show();
 });
+
 
 // choosing individual cells
 $('.cell').click(function(){
+    console.log('click cell');
     cell = this.id;
     makeMove(cell);
     $(this).removeClass("empty");
@@ -137,9 +134,9 @@ function resetGame() {
     $('.cell').html('');
     $('.message').html('');
     $('#overlay').show();
-    $('#easy').css('background-color', '');
-    $('#medium').css('background-color', '');
-    $('#hard').css('background-color', '');
+    $('.pl').show();
+    $('.st').hide();
+    $('.dif').hide();
 }, (2000));
 }
 
@@ -172,13 +169,9 @@ function checkWin() {
          winner = player;
         $('.message').html(winner + " wins the game!");
         updateScore(winner);
-    	$('#chooseX').css('background-color', '');
-    	$('#chooseO').css('background-color', '');
         resetGame();
  } else if( Object.keys(cellValues).length == 9) {
         $('.message').html("it's a draw!");
-    	$('#chooseX').css('background-color', '');
-    	$('#chooseO').css('background-color', '');
         resetGame();
  }else {
      winner = '';

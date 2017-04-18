@@ -1,11 +1,12 @@
 <head>
     <link href='style.css' type='text/css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 </head>
 <body>
     <div class='container mainBox'>
-        <h2>Tic-tac-toe</h2>
+        <h2>Tic tac toe</h2>
         <div class='gameGrid'>
         <div class='row row1'>
         <span class='cell empty br bb' id='1'></span>
@@ -27,16 +28,25 @@
     <!-- pop-up box at beginning -->
 <div id="overlay">
     <div class="wrap">
-          <p>Who goes first?</p>
+         <p class="choose pl">Play against human<br>or computer?<br><br>
+        <a href="#" id='human' aria-label='human'><i class="fa fa-user-circle-o pl"></i></a>&nbsp;
+         <a href="#" id='computer' aria-label='computer'><i class="fa fa-laptop pl lg low"></i></a></p>
+       <!--   <p class="choose st">Who goes first?
           <button id='chooseX'>X</button>
-          <button id='chooseO'>O</button>
-          <p> Difficulty:</p>
-          <button id='easy'>Easy</button>
-          <button id='medium'>Medium</button>
-          <button id='hard'>Hard</button>
-          <p>Play against:</p>
-          <button id='human'>Human</button>
-          <button id='computer'>Computer</button>
+          <button id='chooseO'>O</button></p> -->
+          <div class="choose st hc"><p>Who goes first?</p>
+          <a href="#" id='human-first' aria-label='human-first'><i class="fa fa-user-circle-o hc"></i></a>&nbsp;
+         <a href="#" id='computer-first' aria-label='computer-first'><i class="fa fa-laptop hc lg low"></i></a></div>
+
+      <!--   <div class="choose st xo"><p>Who goes first?</p>
+          <a href="#" id='chooseX' aria-label='x-first'><i class="fa fa-times xo lg"></i></a>&nbsp;
+         <a href="#" id='chooseO' aria-label='o-first'><i class="fa fa-circle-o xo"></i></a></div> -->
+
+          <div class="choose dif"><p>Difficulty:</p>
+          <a href="#" id='easy' class="dif">Easy</a>&nbsp;
+          <a href="#" id='medium' class="dif">Medium</a>&nbsp;
+          <a href="#" id='hard' class="dif">Hard</a></div>
+
           </div>
 </div>
 <div class ='scores'>

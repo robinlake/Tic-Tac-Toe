@@ -1,6 +1,12 @@
 body {
 font-family: 'Open Sans', sans-serif;
 font-weight: 300;
+    color: #fff;
+background: #84fab8; /* Old Browsers */
+background: -webkit-linear-gradient(top right,#84fab8,#8fd3f4); /*Safari 5.1-6*/
+background: -o-linear-gradient(top right,#84fab8,#8fd3f4); /*Opera 11.1-12*/
+background: -moz-linear-gradient(top right,#84fab8,#8fd3f4); /*Fx 3.6-15*/
+background: linear-gradient(top right, #84fab8, #8fd3f4); /*Standard*/
 }
 
 .gameGrid, .row {
@@ -40,29 +46,15 @@ h2 {
 .cell {
     width: 200px;
     height: 200px;
+    background: #fff;
     display: inline-block;
-    vertical-align: top;
+    line-height: 200px;
     text-align: center;
-    padding: .25em 0 0 0;
-    font-size: 3em;
+    font-size: 7em;
     text-transform: uppercase;
     font-weight: 700;
-}
-
-.br {
-    border-right: 2px #eee;
-}
-
-.bb {
-    border-bottom: 2px #eee;
-}
-
-.bl {
-    border-left: 2px #eee;
-}
-
-.bt {
-    border-top: 2px #eee;
+    margin: 2px;
+    color: mediumaquamarine;
 }
 
 
@@ -73,19 +65,76 @@ h2 {
 
 #overlay {
     position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    top: 50%;
+    left: 50%;
     text-align: center;
-    padding: 40px;
-    margin: 10%;
-    width: 70%;
-    height: 70%;
- /*   width: 300px;
-    height: 270px; */
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    margin: -170px 0 0 -170px;
     background: rgba(255,255,255,.7);
-    -moz-box-shadow:    0px 0px 3px 3px #ccc;
-  -webkit-box-shadow: 0px 0px 3px 3px #ccc;
-  box-shadow:         0px 0px 3px 3px #ccc;
-  /*  margin: auto; */
+    color: #777;
+    -moz-box-shadow:    0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  -webkit-box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+#overlay a, #overlay a:visited {
+  color:aquamarine;
+}
+
+#overlay a:hover, #overlay a:focus {
+  color: aqua;
+}
+
+#overlay i {
+    font-size: 2.5em;
+}
+
+.choose {
+    position: relative;
+    top: 50%;
+    height: 50%;
+    margin-top: -25%;
+    font-size: 1.5em;
+}
+
+.pl {
+
+}
+
+.st {
+ display: none;
+}
+
+a.dif, a.dif:visited {
+    padding: 6px;
+    text-transform: uppercase;
+    color: #fff !important;
+    background-color: aquamarine;
+    border: 1px solid aqua;
+    text-decoration: none;
+    font-size: .75em;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
+
+a.dif:hover, a.dif:active {
+    background-color: aqua;
+    border: 1px solid aquamarine;
+}
+
+.dif {
+  display: none;
+}
+
+#overlay i.lg {
+    font-size: 3em;
+}
+
+.low {
+    position: relative;
+    top: 4px;
 }
 
 .wrap {
