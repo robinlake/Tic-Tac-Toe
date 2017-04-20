@@ -7,7 +7,8 @@ $(document).ready(function () {
         cellValues = {}, //1st cell value instance
         cellValuesArray = [0, 1, 2, 3, 4, 5, 6, 7, 8],
         xWins = 0,
-        oWins = 0;
+        oWins = 0,
+        winArray = [];
 
 
     // pop-up box at beginning
@@ -88,6 +89,18 @@ $(document).ready(function () {
         }
     );
 
+    // light up row on win
+    function highlightWin(winArray, winner) {
+  for (let i=0; i<winArray.length; i++) {
+setTimeout(function(){
+  $('#'+winArray[i]).addClass('lit');
+}, 500);
+            }
+        }
+
+
+
+
     function makeMove(cell) { // populates board with player icon and updates record of available spaces
         console.log('makeMove');
         var cellValue = player;
@@ -135,12 +148,10 @@ $(document).ready(function () {
             oWins++;
             $('#oWins').html(oWins);
         }
-        resetGame();
     }
 
     // reset game
     function resetGame() {
-        setTimeout(function () {
             player = 'X';
             cell = '';
             cellValues = {};
@@ -150,37 +161,66 @@ $(document).ready(function () {
             computerDifficulty = '';
             $('.cell').html('');
             $('.cell').addClass('empty');
-            console.log('added empty');
-            $('.message').html('');
             $('#overlay').show();
+        $('.message').html('');
+        $('.afterGame').hide();
+            $('.beforeGame').show();
             $('.pl').show();
             $('.st').hide();
             $('.dif').hide();
           $('.pe-off').removeClass("pe-off");
             $('.cell').addClass("pe-on");
-        }, (2000));
-    }
+            winArray = [];
+            $('.lit').removeClass('lit');
+
+        }
+
+$('#restart').click(
+        function () {
+            resetGame();
+        });
 
 
     // new check win function, returns true if there is a winner
     function checkWin() {
-        if (
-            (cellValues[1] === player && cellValues[2] === player && cellValues[3] === player) ||
-                (cellValues[4] === player && cellValues[5] === player && cellValues[6] === player) ||
-                (cellValues[7] === player && cellValues[8] === player && cellValues[9] === player) ||
-                (cellValues[1] === player && cellValues[4] === player && cellValues[7] === player) ||
-                (cellValues[2] === player && cellValues[5] === player && cellValues[8] === player) ||
-                (cellValues[3] === player && cellValues[6] === player && cellValues[9] === player) ||
-                (cellValues[1] === player && cellValues[5] === player && cellValues[9] === player) ||
-                (cellValues[3] === player && cellValues[5] === player && cellValues[7] === player)
-        ) {
+        if (cellValues[1] === player && cellValues[2] === player && cellValues[3] === player) {
+            winArray = [1,2,3];
+            } else if (cellValues[4] === player && cellValues[5] === player && cellValues[6] === player) {
+            winArray = [4,5,6];
+            } else if (cellValues[7] === player && cellValues[8] === player && cellValues[9] === player) {
+            winArray = [7,8,9,];
+            } else if (cellValues[1] === player && cellValues[4] === player && cellValues[7] === player) {
+            winArray = [1,4,7];
+            } else if (cellValues[2] === player && cellValues[5] === player && cellValues[8] === player) {
+            winArray = [2,5,8];
+            } else if (cellValues[3] === player && cellValues[6] === player && cellValues[9] === player) {
+            winArray = [3,6,9];
+            } else if (cellValues[1] === player && cellValues[5] === player && cellValues[9] === player) {
+            winArray = [1,5,9];
+            } else if (cellValues[3] === player && cellValues[5] === player && cellValues[7] === player) {
+            winArray = [3,5,7];
+            }
+         if (winArray.length === 3) {
             winner = player;
-            $('.message').html(winner + " wins the game!");
+             $('.pe-on').removeClass("pe-on");
+            $('.cell').addClass("pe-off");
+            highlightWin(winArray, winner);
+             setTimeout(function () {
+             $('#overlay').show();
+                 $('.beforeGame').hide();
+             $('.afterGame').show();
+                 if (winner==="X") {
+            $('.message').html('<span class="win-x">&times;</span> wins!');
+                               } else if (winner==="O") {
+             $('.message').html('<span class="win-o">o</span> wins!');
+                               }
             updateScore(winner);
-            resetGame();
+            }, (2000));
         } else if (Object.keys(cellValues).length === 9) {
-            $('.message').html("it's a draw!");
-            resetGame();
+            $('#overlay').show();
+            $('.beforeGame').hide();
+             $('.afterGame').show();
+            $('.message').html("It's a draw!");
         } else {
             winner = '';
         }
