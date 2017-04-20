@@ -11,21 +11,26 @@ $(document).ready(function () {
         winArray = [];
 
 
-    // pop-up box at beginning
+    // beforegame options
 
-    $('#human-first').click(function () {
+    // play human or computer?
+
+    $('#human').click(function () {
         player = 'X';
         humanPlayer = 'X';
         computerPlayer = 'O';
+        console.log(player, humanPlayer, computerPlayer);
         $('#overlay').hide();
+        computer = '';
+    });
+    $('#computer').click(function () {
+        computer = 'on';
+        $('.pl').hide();
+        $('.dif').show();
     });
 
-    $('#computer-first').click(function () {
-        player = 'X';
-        humanPlayer = 'O';
-        computerPlayer = 'X';
-        $('#overlay').hide();
-    });
+    // set difficulty
+
     $('#easy').click(function () {
         $('.dif').hide();
         $('.hc').show();
@@ -41,37 +46,47 @@ $(document).ready(function () {
         $('.hc').show();
         computerDifficulty = 'hard';
     });
-    $('#human').click(function () {
+
+    // human or computer first?
+
+    $('#human-first').click(function () {
         player = 'X';
         humanPlayer = 'X';
         computerPlayer = 'O';
-        console.log(player, humanPlayer, computerPlayer);
         $('#overlay').hide();
-        computer = '';
     });
-    $('#computer').click(function () {
-        computer = 'on';
-        $('.pl').hide();
-        $('.dif').show();
+
+    $('#computer-first').click(function () {
+        player = 'X';
+        humanPlayer = 'O';
+        computerPlayer = 'X';
+        $('#overlay').hide();
+        if (computerDifficulty === 'easy') {
+            computerMove();
+        } else if (computerDifficulty === 'hard') {
+            minimaxMove();
+        }
     });
+
 
     // display player icons on hover
 
     $('.empty').mouseenter(
         function () {
             if (player === 'X') {
-            $(this).append($("<span class ='chov x'>&times;</span>"));
-        } else if (player === 'O') {
-            $(this).append($("<span class ='chov o'>o</span>"));
-        }
+                $(this).append($("<span class ='chov x'>&times;</span>"));
+            } else if (player === 'O') {
+                $(this).append($("<span class ='chov o'>o</span>"));
+            }
         }
     );
 
     $('.empty').mouseleave(
         function () {
             if ($(this).hasClass("empty")) {
-            $(this).find('.chov').remove();
-        }}
+                $(this).find('.chov').remove();
+            }
+        }
     );
 
 
@@ -83,49 +98,33 @@ $(document).ready(function () {
             cell = this.id;
             console.log(cell);
             makeMove(cell);
-          //  $(this).off('mouseenter mouseleave');
-
-
         }
     );
 
     // light up row on win
     function highlightWin(winArray, winner) {
-  for (let i=0; i<winArray.length; i++) {
-setTimeout(function(){
-  $('#'+winArray[i]).addClass('lit');
-}, 500);
-            }
+        for (let i = 0; i < winArray.length; i++) {
+            setTimeout(function () {
+                $('#' + winArray[i]).addClass('lit');
+            }, 300);
         }
+    }
 
 
 
 
     function makeMove(cell) { // populates board with player icon and updates record of available spaces
-        console.log('makeMove');
         var cellValue = player;
         cellValues[cell] = player; // record values of cells already taken
+        console.log(cellValues);
         var cellDec = parseInt(cell, 10) - 1;
         cellValuesArray[cellDec] = player;
-        //checkGameStatus();
         checkWin();
         switchPlayers();
-        // console.log(Object.keys(cellValues).length);  
-        console.log(cellValues);
-        console.log(cellValuesArray);
         if (computer === 'on' && computerDifficulty === 'easy' && Object.keys(cellValues).length < 9) { //cellvalues
             computerMove();
-        } else if (computer === 'on' && computerDifficulty === 'hard' && Object.keys(cellValues).length < 9) { //cellvalues
-            var result = minimax(cellValuesArray, computerPlayer).index;
-            console.log('result = ' + result);
-            console.log(cellValues);
-            console.log(cellValuesArray);
-            cellValuesArray[result] = computerPlayer;
-            var result1 = result + 1;
-            cellValues[result1] = computerPlayer;
-            $('#' + result1).html(computerPlayer);
-            checkWin();
-            switchPlayers();
+        } else if (computer === 'on' && computerDifficulty === 'hard' && Object.keys(cellValues).length < 9) {
+            minimaxMove();
         }
     }
 
@@ -152,30 +151,30 @@ setTimeout(function(){
 
     // reset game
     function resetGame() {
-            player = 'X';
-            cell = '';
-            cellValues = {};
-            cellValuesArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-            winner = undefined;
-            computer = '';
-            computerDifficulty = '';
-            $('.cell').html('');
-            $('.cell').addClass('empty');
-            $('#overlay').show();
+        player = 'X';
+        cell = '';
+        cellValues = {};
+        cellValuesArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        winner = undefined;
+        computer = '';
+        computerDifficulty = '';
+        $('.cell').html('');
+        $('.cell').addClass('empty');
+        $('#overlay').show();
         $('.message').html('');
         $('.afterGame').hide();
-            $('.beforeGame').show();
-            $('.pl').show();
-            $('.st').hide();
-            $('.dif').hide();
-          $('.pe-off').removeClass("pe-off");
-            $('.cell').addClass("pe-on");
-            winArray = [];
-            $('.lit').removeClass('lit');
+        $('.beforeGame').show();
+        $('.pl').show();
+        $('.st').hide();
+        $('.dif').hide();
+        $('.pe-off').removeClass("pe-off");
+        $('.cell').addClass("pe-on");
+        winArray = [];
+        $('.lit').removeClass('lit');
 
-        }
+    }
 
-$('#restart').click(
+    $('#restart').click(
         function () {
             resetGame();
         });
@@ -184,50 +183,51 @@ $('#restart').click(
     // new check win function, returns true if there is a winner
     function checkWin() {
         if (cellValues[1] === player && cellValues[2] === player && cellValues[3] === player) {
-            winArray = [1,2,3];
-            } else if (cellValues[4] === player && cellValues[5] === player && cellValues[6] === player) {
-            winArray = [4,5,6];
-            } else if (cellValues[7] === player && cellValues[8] === player && cellValues[9] === player) {
-            winArray = [7,8,9,];
-            } else if (cellValues[1] === player && cellValues[4] === player && cellValues[7] === player) {
-            winArray = [1,4,7];
-            } else if (cellValues[2] === player && cellValues[5] === player && cellValues[8] === player) {
-            winArray = [2,5,8];
-            } else if (cellValues[3] === player && cellValues[6] === player && cellValues[9] === player) {
-            winArray = [3,6,9];
-            } else if (cellValues[1] === player && cellValues[5] === player && cellValues[9] === player) {
-            winArray = [1,5,9];
-            } else if (cellValues[3] === player && cellValues[5] === player && cellValues[7] === player) {
-            winArray = [3,5,7];
-            }
-         if (winArray.length === 3) {
+            winArray = [1, 2, 3];
+        } else if (cellValues[4] === player && cellValues[5] === player && cellValues[6] === player) {
+            winArray = [4, 5, 6];
+        } else if (cellValues[7] === player && cellValues[8] === player && cellValues[9] === player) {
+            winArray = [7, 8, 9, ];
+        } else if (cellValues[1] === player && cellValues[4] === player && cellValues[7] === player) {
+            winArray = [1, 4, 7];
+        } else if (cellValues[2] === player && cellValues[5] === player && cellValues[8] === player) {
+            winArray = [2, 5, 8];
+        } else if (cellValues[3] === player && cellValues[6] === player && cellValues[9] === player) {
+            winArray = [3, 6, 9];
+        } else if (cellValues[1] === player && cellValues[5] === player && cellValues[9] === player) {
+            winArray = [1, 5, 9];
+        } else if (cellValues[3] === player && cellValues[5] === player && cellValues[7] === player) {
+            winArray = [3, 5, 7];
+        }
+        if (winArray.length === 3) {
             winner = player;
-             $('.pe-on').removeClass("pe-on");
+            $('.pe-on').removeClass("pe-on");
             $('.cell').addClass("pe-off");
             highlightWin(winArray, winner);
-             setTimeout(function () {
-             $('#overlay').show();
-                 $('.beforeGame').hide();
-             $('.afterGame').show();
-                 if (winner==="X") {
-            $('.message').html('<span class="win-x">&times;</span> wins!');
-                               } else if (winner==="O") {
-             $('.message').html('<span class="win-o">o</span> wins!');
-                               }
-            updateScore(winner);
+            setTimeout(function () {
+                $('#overlay').show();
+                $('.beforeGame').hide();
+                $('.afterGame').show();
+                if (winner === "X") {
+                    $('.message').html('<span class="win-x">&times;</span> wins!');
+                } else if (winner === "O") {
+                    $('.message').html('<span class="win-o">o</span> wins!');
+                }
+                updateScore(winner);
             }, (2000));
         } else if (Object.keys(cellValues).length === 9) {
             $('#overlay').show();
             $('.beforeGame').hide();
-             $('.afterGame').show();
+            $('.afterGame').show();
             $('.message').html("It's a draw!");
         } else {
             winner = '';
         }
     }
 
-    // computer move with random selection
+    // computer move: easy
     function computerMove() {
+        console.log('computer move easy');
         var retry = '';
         var randomChoice = Math.ceil(Math.random() * 9);
         var choice = parseInt(randomChoice, 10);
@@ -240,7 +240,14 @@ $('#restart').click(
                 retry = (choice % 9) + 1;
                 computerMove();
             } else {
-                $('#' + choice).html(player);
+                if (player === 'X') {
+                $('#' + choice).append($("<span class ='chov x'>&times;</span>"));
+            } else if (player === 'O') {
+                $('#' + choice).append($("<span class ='chov o'>o</span>"));
+            }
+                $('#' + choice).removeClass('empty');
+                $('#' + choice).removeClass('pe-on');
+                $('#' + choice).addClass('pe-off');
                 retry = '';
                 cellValues[choice] = player;
                 cellValuesArray[choice] = player;
@@ -248,7 +255,30 @@ $('#restart').click(
                 switchPlayers();
             }
         }
-        placeToken();
+        if (!winner) {
+            placeToken();
+    }
+    }
+
+    // computer move: hard
+    function minimaxMove() {
+        var result = minimax(cellValuesArray, computerPlayer).index;
+            console.log('result = ' + result);
+            console.log(cellValues);
+            console.log(cellValuesArray);
+            cellValuesArray[result] = computerPlayer;
+            var result1 = result + 1;
+            cellValues[result1] = computerPlayer;
+            if (player === 'X') {
+                $('#' + result1).append($("<span class ='chov x'>&times;</span>"));
+            } else if (player === 'O') {
+                $('#' + result1).append($("<span class ='chov o'>o</span>"));
+            }
+                $('#' + result1).removeClass('empty');
+                $('#' + result1).removeClass('pe-on');
+                $('#' + result1).addClass('pe-off');
+            checkWin();
+            switchPlayers();
     }
 
 
