@@ -1,16 +1,16 @@
 <head>
     <link href='style.css' type='text/css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|700" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src='script.js'></script>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700|Roboto:300,900" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 </head>
 <body>
     <div class='container mainBox'>
-        <h2>Tic-tac-toe</h2>
+        <h2>Tic tac toe</h2>
+        <p class='byline'>Pair-programmed by <a href='https://www.freecodecamp.com/robinlake' target='_blank'>@favicon</a> and <a href='https://rifkegribenes.github.io/' target='_blank'>@rifkegribenes</a> for freeCodeCamp</p>
         <div class='gameGrid'>
         <div class='row row1'>
-        <span class='cell empty' id='1'></span> 
+        <span class='cell empty' id='1'></span>
         <span class='cell empty' id='2'></span>
         <span class='cell empty' id='3'></span>
         </div>
@@ -25,32 +25,38 @@
             <span class='cell empty' id='9'></span>
         </div> 
         </div>
-        <div class='message'></div>
+
     <!-- pop-up box at beginning -->
 <div id="overlay">
-    <div class="wrap">
-          <p>Who goes first?</p>
-          <button id='chooseX'>X</button>
-          <button id='chooseO'>O</button>
-          <p> Difficulty:</p>
-          <button id='easy'>Easy</button>
-          <button id='medium'>Medium</button>
-          <button id='hard'>Hard</button>
-          <p>Play against:</p>
-          <button id='human'>Human</button>
-          <button id='computer'>Computer</button>
-          </div>
-</div>
-<div class ='scores'>
-            <p>
-                <span class='bold'>Wins for X: </span>
+      <div class='wrap beforeGame'>
+         <p class="choose pl">Play against human<br>or computer?<br><br>
+        <a href="#" id='human' aria-label='human'><i class="fa fa-user-circle-o pl"></i></a>&nbsp;
+         <a href="#" id='computer' aria-label='computer'><i class="fa fa-laptop pl lg low"></i></a></p>
+          <div class="choose st hc"><p>Who goes first?</p>
+          <a href="#" id='human-first' aria-label='human-first'><i class="fa fa-user-circle-o hc"></i></a>&nbsp;
+         <a href="#" id='computer-first' aria-label='computer-first'><i class="fa fa-laptop hc lg low"></i></a></div>
+          <div class="choose dif"><p>Difficulty:</p>
+          <a href="#" id='easy' class="dif btn">Easy</a>&nbsp;
+       <!--   <a href="#" id='medium' class="dif btn">Medium</a>&nbsp; -->
+          <a href="#" id='hard' class="dif btn">Hard</a></div>
+    </div>
+       <div class='wrap afterGame'>
+        <div class='message'></div>
+        <div class='again'>
+        <a href="#" id='restart' class='btn'>Play again?</a>
+        </div>
+        <div class ='scores'>
+            <p>Wins for X:
                 <span id='xWins'>0</span>
-            </p>
-            <p>
-                <span class='bold'>Wins for O: </span>
+             | Wins for O:
                 <span id='oWins'>0</span>
             </p>
         </div>
-    </div>
+        </div>
 
+          </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src='script.js'></script>
 </body>

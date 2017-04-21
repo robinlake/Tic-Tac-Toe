@@ -1,89 +1,250 @@
 body {
-font-family: 'Open Sans', sans-serif;
-font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    background: #84fab8;
+    /* Old Browsers */
+    background: -webkit-linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Safari 5.1-6*/
+    background: -o-linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Opera 11.1-12*/
+    background: -moz-linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Fx 3.6-15*/
+    background: linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Standard*/
 }
 
-.gameGrid, .row {
+.byline {
+        text-align: center;
+        margin: -40px auto 30px;
+    width: 300px;
+}
+
+.gameGrid,
+.row {
     width: 80%;
     margin: auto;
 }
 
 h2 {
     text-align: center;
-    font-weight: 300;
     font-size: 3em;
-    
-}
-
-.bold {
-    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 900;
 }
 
 .scores {
-    width: 300px;
+    width: 100%;
     margin: auto;
-    text-align: center;
-    
 }
-
 
 .mainBox {
     padding-top: 50px;
-
 }
-.row{
+
+.row {
     display: flex;
     justify-content: center;
 }
+
 .cell {
-    width: 100px;
-    height: 80px;
-    background: #dfdfdf;
+    width: 200px;
+    height: 200px;
+    font-family: 'Josefin Sans', sans-serif;
+    background: #fff;
     display: inline-block;
-    margin: 2px;
-    vertical-align: top;
     text-align: center;
-    padding: .25em 0 0 0;
-    font-size: 3em;
+    font-size: 100px;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 400;
+    margin: 2px;
+    cursor: pointer;
 }
 
+.win-x {
+    color: #84fab8;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 400;
+    font-size: 2.5em;
+}
+.win-o {
+    color: #ee0979;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    font-size: 2em;
+}
 
+.x {
+    color: transparent;
+    margin-top: -30px;
+    background: #84fab8;
+    /* Old Browsers */
+    background: -webkit-linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Safari 5.1-6*/
+    background: -o-linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Opera 11.1-12*/
+    background: -moz-linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Fx 3.6-15*/
+    background: linear-gradient(top right, #84fab8, #8fd3f4);
+    /*Standard*/
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 2.5em !important;
+    line-height: 150px;
+    font-weight: 400 !important;
+}
 
+.lit {
+    background: #f3f2bd;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.o {
+    color: transparent;
+    background: #ee0979;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(top right, #ff6a00, #ee0979);
+    /*Safari 5.1-6*/
+    background: -o-linear-gradient(top right, #ff6a00, #ee0979);
+    /*Opera 11.1-12*/
+    background: -moz-linear-gradient(top right, #ff6a00, #ee0979);
+    /*Fx 3.6-15*/
+    background: linear-gradient(top right, #ff6a00, #ee0979);
+    /*Standard*/
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: 1.1em !important;
+    font-weight: 700;
+    line-height: 220px;
+}
+
+.pe-off {
+    pointer-events: none;
+}
+
+.pe-on {
+    pointer-events: auto;
+}
 
 .message {
     margin-top: 20px;
     text-align: center;
+    font-size: 3em;
+}
+
+.afterGame {
+    display: none;
 }
 
 #overlay {
     position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    top: 50%;
+    left: 50%;
     text-align: center;
-    padding: 40px;
-    margin: 10%;
-    width: 70%;
-    height: 70%;
- /*   width: 300px;
-    height: 270px; */
-    background: rgba(255,255,255,.7);
-    -moz-box-shadow:    0px 0px 3px 3px #ccc;
-  -webkit-box-shadow: 0px 0px 3px 3px #ccc;
-  box-shadow:         0px 0px 3px 3px #ccc;
-  /*  margin: auto; */
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    margin: -170px 0 0 -170px;
+    background: rgba(255, 255, 255, .9);
+    color: #777;
+    -moz-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    -webkit-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+#overlay a, #overlay a:visited {
+    color: aquamarine;
+}
+
+#overlay a:hover, #overlay a:focus {
+    color: aqua;
+}
+
+#overlay i {
+    font-size: 2.5em;
+}
+
+.choose {
+    position: relative;
+    top: 50%;
+    height: 50%;
+    margin-top: -25%;
+    font-size: 1.5em;
+}
+
+.pl {}
+
+.st {
+    display: none;
+}
+
+.btn, .btn:visited {
+    padding: 6px;
+    text-transform: uppercase;
+    color: #fff !important;
+    background-color: aquamarine;
+    border: 1px solid aqua;
+    text-decoration: none;
+    font-size: .75em;
+    letter-spacing: 1px;
+    margin-top: 20px;
+}
+
+.btn:hover, .btn:active {
+    background-color: aqua;
+    border: 1px solid aquamarine;
+}
+
+.dif {
+    display: none;
+}
+
+.lg {
+    font-size: 3em;
+}
+
+.low {
+    position: relative;
+    top: 4px;
 }
 
 .wrap {
-    margin:auto;
-    width: 80%;
-    height: 65%;
-    padding-top: 15%;
+    margin: auto;
+    width: 90%;
+    height: 90%;
+
+}
+
+.again {
+font-size: 1.5em;
+    margin: 50px 0;
+}
+
+.again .btn {
+    padding: 10px;
 }
 
 @media (max-width: 599px) {
-.gameGrid, .row {
-    width: 90%;
-    margin: auto;
-}
+    .gameGrid, .row {
+        width: 90%;
+        margin: auto;
+    }
+
+    .cell {
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    }
+
+    .x {
+        line-height: 75px;
+    }
+
+    .o {
+        line-height: 110px;
+    }
 }
